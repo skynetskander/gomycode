@@ -1,0 +1,56 @@
+version: '3'
+services:
+ jenkins:
+    image: jenkins/jenkins:2.401.1-lts-jdk11
+    container_name: jenkins
+    user: root
+    ports:
+      - 8082:8080
+      - 50000:50000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/jenkins:/var/jenkins_home
+    restart: always
+ nexus:
+    image: sonatype/nexus3:3.55.0
+    container_name: nexus
+    privileged: true
+    user: root
+    volumes:
+      - "nexus-data:/sonatype-work"
+    restart: always
+    ports:
+      - "8081:8081"
+
+ sonarqube:
+    image: sonarqube:lts-community
+    ports:
+      - 9000:9000
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:h2:tcp://sonarqube-db:9092/sonar
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_temp:/opt/sonarqube/temp
+    depends_on:
+      - sonarqube-db
+ sonarqube-db:
+    image: postgres:latest
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:h2:tcp://sonarqube-db:9092/sonar
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=sonar
+    volumes:
+      - sonarqube_db:/opt/sonarqube/data
+
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  sonarqube_temp:
+  sonarqube_db:
+  nexus-data: {}
