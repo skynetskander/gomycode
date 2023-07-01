@@ -7,6 +7,9 @@ services:
     ports:
       - 8082:8080
       - 50000:50000
+    networks:
+      devops:
+        ipv4_address: 192.168.65.4
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - jenkins-data:/var/jenkins_home
@@ -17,13 +20,14 @@ services:
     privileged: true
     user: root
     networks:
-       devops:
-           ipv4_address: 172.18.0.3
+      devops:
+        ipv4_address: 192.168.65.3
     volumes:
       - "nexus-data:/sonatype-work"
     restart: always
     ports:
       - "8081:8081"
+      - "8085:8085"
 
  sonarqube:
     image: sonarqube:lts-community
@@ -58,9 +62,10 @@ volumes:
   nexus-data: {}
   jenkins-data:
 
-  networks:
+networks:
   devops:
     driver: bridge
     ipam:
+      driver: default
       config:
-        - subnet: 172.18.0.0/24
+        - subnet: 192.168.65.0/24
