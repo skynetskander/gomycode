@@ -12,19 +12,20 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - jenkins-data:/var/jenkins_home
     restart: always
+    
  nexus:
     image: sonatype/nexus3:3.55.0
     container_name: nexus
     privileged: true
     user: root
- 
-    volumes:
-      - "nexus-data:/sonatype-work"
-    restart: always
     ports:
       - "8081:8081"
       - "8085:8085"
 
+    volumes:
+      - "nexus-data:/sonatype-work"
+    restart: always
+    
  sonarqube:
     image: sonarqube:lts-community
     ports:
