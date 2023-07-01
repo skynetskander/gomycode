@@ -16,6 +16,9 @@ services:
     container_name: nexus
     privileged: true
     user: root
+    networks:
+       devops:
+           ipv4_address: 172.18.0.3
     volumes:
       - "nexus-data:/sonatype-work"
     restart: always
@@ -54,3 +57,10 @@ volumes:
   sonarqube_db:
   nexus-data: {}
   jenkins-data:
+
+  networks:
+  devops:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24

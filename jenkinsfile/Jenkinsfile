@@ -32,14 +32,15 @@ pipeline {
             }
         }
 
-
-
-        stage('Push docker image to Nexus') {
+stage('Uploading to Nexus') {
             steps {
-                dockerPushToNexus('docker build -t my-docker-image:v1 .')
-            
+                    sh 'docker login 172.18.0.3:8085 -u admin -p admin'
+                    sh 'docker tag 815e97181a22 172.18.0.3:8085/tag_image_v1:v1'
+                    sh 'docker push 172.18.0.3:8085/tag_image_v1:v1'
+        
             }
         }
+
         
         stage('Deploy') {
             steps {
