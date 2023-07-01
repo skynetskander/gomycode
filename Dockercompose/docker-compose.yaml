@@ -9,7 +9,7 @@ services:
       - 50000:50000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/jenkins:/var/jenkins_home
+      - jenkins-data:/var/jenkins_home
     restart: always
  nexus:
     image: sonatype/nexus3:3.55.0
@@ -46,7 +46,6 @@ services:
     volumes:
       - sonarqube_db:/opt/sonarqube/data
 
-
 volumes:
   sonarqube_data:
   sonarqube_extensions:
@@ -54,3 +53,4 @@ volumes:
   sonarqube_temp:
   sonarqube_db:
   nexus-data: {}
+  jenkins-data:
