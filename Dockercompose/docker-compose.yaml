@@ -7,9 +7,7 @@ services:
     ports:
       - 8082:8080
       - 50000:50000
-  // networks:
-     // devops:
-        // ipv4_address: 192.168.65.4
+
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - jenkins-data:/var/jenkins_home
@@ -19,9 +17,7 @@ services:
     container_name: nexus
     privileged: true
     user: root
-    // networks:
-      // devops:
-        // ipv4_address: 192.168.65.3
+ 
     volumes:
       - "nexus-data:/sonatype-work"
     restart: always
@@ -61,11 +57,3 @@ volumes:
   sonarqube_db:
   nexus-data: {}
   jenkins-data:
-
-// networks:
-  // devops:
-    // driver: bridge
-    // ipam:
-      // driver: default
-      // config:
-     //    - subnet: 192.168.65.0/24
